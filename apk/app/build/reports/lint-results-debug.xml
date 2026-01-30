@@ -1,0 +1,1504 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.1.1">
+
+    <issue
+        id="ScopedStorage"
+        severity="Warning"
+        message="The Google Play store has a policy that limits usage of MANAGE_EXTERNAL_STORAGE"
+        category="Correctness"
+        priority="8"
+        summary="Affected by scoped storage"
+        explanation="Scoped storage is enforced on Android 10+ (or Android 11+ if using `requestLegacyExternalStorage`). In particular, `WRITE_EXTERNAL_STORAGE` will no longer provide write access to all files; it will provide the equivalent of `READ_EXTERNAL_STORAGE` instead.&#xA;&#xA;As of Android 13, if you need to query or interact with MediaStore or media files on the shared storage, you should be using instead one or more new storage permissions:&#xA;* `android.permission.READ_MEDIA_IMAGES`&#xA;* `android.permission.READ_MEDIA_VIDEO`&#xA;* `android.permission.READ_MEDIA_AUDIO`&#xA;&#xA;and then add `maxSdkVersion=&quot;33&quot;` to the older permission. See the developer guide for how to do this: https://developer.android.com/about/versions/13/behavior-changes-13#granular-media-permissions&#xA;&#xA;The `MANAGE_EXTERNAL_STORAGE` permission can be used to manage all files, but it is rarely necessary and most apps on Google Play are not allowed to use it. Most apps should instead migrate to use scoped storage. To modify or delete files, apps should request write access from the user as described at https://goo.gle/android-mediastore-createwriterequest.&#xA;&#xA;To learn more, read these resources: Play policy: https://goo.gle/policy-storage-help Allowable use cases: https://goo.gle/policy-storage-usecases"
+        url="https://goo.gle/android-storage-usecases"
+        urls="https://goo.gle/android-storage-usecases"
+        errorLine1="    &lt;uses-permission android:name=&quot;android.permission.MANAGE_EXTERNAL_STORAGE&quot; />"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\AndroidManifest.xml"
+            line="4"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        severity="Warning"
+        message="Field requires API level 30 (current min is 24): `android.provider.Settings#ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION`"
+        category="Correctness"
+        priority="6"
+        summary="Using inlined constants on older versions"
+        explanation="This check scans through all the Android API field references in the application and flags certain constants, such as static final integers and Strings, which were introduced in later versions. These will actually be copied into the class files rather than being referenced, which means that the value is available even when running on older devices. In some cases that&apos;s fine, and in other cases it can result in a runtime crash or incorrect behavior. It depends on the context, so consider the code carefully and decide whether it&apos;s safe and can be suppressed or whether the code needs to be guarded.&#xA;&#xA;If you really want to use this API and don&apos;t need to support older devices just set the `minSdkVersion` in your `build.gradle` or `AndroidManifest.xml` files.&#xA;&#xA;If your code is **deliberately** accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the `@TargetApi` annotation specifying the local minimum SDK to apply, such as `@TargetApi(11)`, such that this check considers 11 rather than your manifest file&apos;s minimum SDK as the required API level."
+        errorLine1="                    Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);"
+        errorLine2="                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\ui\MainActivity.java"
+            line="52"
+            column="48"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        severity="Warning"
+        message="Field requires API level 30 (current min is 24): `android.provider.Settings#ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION`"
+        category="Correctness"
+        priority="6"
+        summary="Using inlined constants on older versions"
+        explanation="This check scans through all the Android API field references in the application and flags certain constants, such as static final integers and Strings, which were introduced in later versions. These will actually be copied into the class files rather than being referenced, which means that the value is available even when running on older devices. In some cases that&apos;s fine, and in other cases it can result in a runtime crash or incorrect behavior. It depends on the context, so consider the code carefully and decide whether it&apos;s safe and can be suppressed or whether the code needs to be guarded.&#xA;&#xA;If you really want to use this API and don&apos;t need to support older devices just set the `minSdkVersion` in your `build.gradle` or `AndroidManifest.xml` files.&#xA;&#xA;If your code is **deliberately** accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the `@TargetApi` annotation specifying the local minimum SDK to apply, such as `@TargetApi(11)`, such that this check considers 11 rather than your manifest file&apos;s minimum SDK as the required API level."
+        errorLine1="                        Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);"
+        errorLine2="                                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\ui\MainActivity.java"
+            line="98"
+            column="52"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        severity="Warning"
+        message="Field requires API level 30 (current min is 24): `android.provider.Settings#ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION`"
+        category="Correctness"
+        priority="6"
+        summary="Using inlined constants on older versions"
+        explanation="This check scans through all the Android API field references in the application and flags certain constants, such as static final integers and Strings, which were introduced in later versions. These will actually be copied into the class files rather than being referenced, which means that the value is available even when running on older devices. In some cases that&apos;s fine, and in other cases it can result in a runtime crash or incorrect behavior. It depends on the context, so consider the code carefully and decide whether it&apos;s safe and can be suppressed or whether the code needs to be guarded.&#xA;&#xA;If you really want to use this API and don&apos;t need to support older devices just set the `minSdkVersion` in your `build.gradle` or `AndroidManifest.xml` files.&#xA;&#xA;If your code is **deliberately** accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the `@TargetApi` annotation specifying the local minimum SDK to apply, such as `@TargetApi(11)`, such that this check considers 11 rather than your manifest file&apos;s minimum SDK as the required API level."
+        errorLine1="                    Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);"
+        errorLine2="                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\ui\MainActivity.java"
+            line="162"
+            column="48"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        severity="Error"
+        message="Call requires API level 30 (current min is 24): `android.os.Environment#isExternalStorageManager`"
+        category="Correctness"
+        priority="6"
+        summary="Calling new methods on older versions"
+        explanation="This check scans through all the Android API calls in the application and warns about any calls that are not available on **all** versions targeted by this application (according to its minimum SDK attribute in the manifest).&#xA;&#xA;If you really want to use this API and don&apos;t need to support older devices just set the `minSdkVersion` in your `build.gradle` or `AndroidManifest.xml` files.&#xA;&#xA;If your code is **deliberately** accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the `@TargetApi` annotation specifying the local minimum SDK to apply, such as `@TargetApi(11)`, such that this check considers 11 rather than your manifest file&apos;s minimum SDK as the required API level.&#xA;&#xA;If you are deliberately setting `android:` attributes in style definitions, make sure you place this in a `values-v`*NN* folder in order to avoid running into runtime conflicts on certain devices where manufacturers have added custom attributes whose ids conflict with the new ones on later platforms.&#xA;&#xA;Similarly, you can use tools:targetApi=&quot;11&quot; in an XML file to indicate that the element will only be inflated in an adequate context."
+        errorLine1="        return Environment.isExternalStorageManager();"
+        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\io\ConfigIO.java"
+            line="42"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        severity="Error"
+        message="Call requires API level 30 (current min is 24): `android.os.Environment#isExternalStorageManager`"
+        category="Correctness"
+        priority="6"
+        summary="Calling new methods on older versions"
+        explanation="This check scans through all the Android API calls in the application and warns about any calls that are not available on **all** versions targeted by this application (according to its minimum SDK attribute in the manifest).&#xA;&#xA;If you really want to use this API and don&apos;t need to support older devices just set the `minSdkVersion` in your `build.gradle` or `AndroidManifest.xml` files.&#xA;&#xA;If your code is **deliberately** accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the `@TargetApi` annotation specifying the local minimum SDK to apply, such as `@TargetApi(11)`, such that this check considers 11 rather than your manifest file&apos;s minimum SDK as the required API level.&#xA;&#xA;If you are deliberately setting `android:` attributes in style definitions, make sure you place this in a `values-v`*NN* folder in order to avoid running into runtime conflicts on certain devices where manufacturers have added custom attributes whose ids conflict with the new ones on later platforms.&#xA;&#xA;Similarly, you can use tools:targetApi=&quot;11&quot; in an XML file to indicate that the element will only be inflated in an adequate context."
+        errorLine1="                if (!Environment.isExternalStorageManager()) {"
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\ui\MainActivity.java"
+            line="51"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        severity="Error"
+        message="Call requires API level 30 (current min is 24): `android.os.Environment#isExternalStorageManager`"
+        category="Correctness"
+        priority="6"
+        summary="Calling new methods on older versions"
+        explanation="This check scans through all the Android API calls in the application and warns about any calls that are not available on **all** versions targeted by this application (according to its minimum SDK attribute in the manifest).&#xA;&#xA;If you really want to use this API and don&apos;t need to support older devices just set the `minSdkVersion` in your `build.gradle` or `AndroidManifest.xml` files.&#xA;&#xA;If your code is **deliberately** accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the `@TargetApi` annotation specifying the local minimum SDK to apply, such as `@TargetApi(11)`, such that this check considers 11 rather than your manifest file&apos;s minimum SDK as the required API level.&#xA;&#xA;If you are deliberately setting `android:` attributes in style definitions, make sure you place this in a `values-v`*NN* folder in order to avoid running into runtime conflicts on certain devices where manufacturers have added custom attributes whose ids conflict with the new ones on later platforms.&#xA;&#xA;Similarly, you can use tools:targetApi=&quot;11&quot; in an XML file to indicate that the element will only be inflated in an adequate context."
+        errorLine1="                    if (!Environment.isExternalStorageManager()) {"
+        errorLine2="                                     ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\ui\MainActivity.java"
+            line="97"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        severity="Error"
+        message="Call requires API level 30 (current min is 24): `android.os.Environment#isExternalStorageManager`"
+        category="Correctness"
+        priority="6"
+        summary="Calling new methods on older versions"
+        explanation="This check scans through all the Android API calls in the application and warns about any calls that are not available on **all** versions targeted by this application (according to its minimum SDK attribute in the manifest).&#xA;&#xA;If you really want to use this API and don&apos;t need to support older devices just set the `minSdkVersion` in your `build.gradle` or `AndroidManifest.xml` files.&#xA;&#xA;If your code is **deliberately** accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the `@TargetApi` annotation specifying the local minimum SDK to apply, such as `@TargetApi(11)`, such that this check considers 11 rather than your manifest file&apos;s minimum SDK as the required API level.&#xA;&#xA;If you are deliberately setting `android:` attributes in style definitions, make sure you place this in a `values-v`*NN* folder in order to avoid running into runtime conflicts on certain devices where manufacturers have added custom attributes whose ids conflict with the new ones on later platforms.&#xA;&#xA;Similarly, you can use tools:targetApi=&quot;11&quot; in an XML file to indicate that the element will only be inflated in an adequate context."
+        errorLine1="                if (!Environment.isExternalStorageManager()) {"
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\ui\MainActivity.java"
+            line="161"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="OldTargetApi"
+        severity="Warning"
+        message="Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the android.os.Build.VERSION_CODES javadoc for details."
+        category="Correctness"
+        priority="6"
+        summary="Target SDK attribute is not targeting latest version"
+        explanation="When your application runs on a version of Android that is more recent than your `targetSdkVersion` specifies that it has been tested with, various compatibility modes kick in. This ensures that your application continues to work, but it may look out of place. For example, if the `targetSdkVersion` is less than 14, your app may get an option button in the UI.&#xA;&#xA;To fix this issue, set the `targetSdkVersion` to the highest available value. Then test your app to make sure everything works correctly. You may want to consult the compatibility notes to see what changes apply to each version you are adding support for: https://developer.android.com/reference/android/os/Build.VERSION_CODES.html as well as follow this guide:&#xA;https://developer.android.com/distribute/best-practices/develop/target-sdk.html"
+        url="https://developer.android.com/distribute/best-practices/develop/target-sdk.html"
+        urls="https://developer.android.com/distribute/best-practices/develop/target-sdk.html,https://developer.android.com/reference/android/os/Build.VERSION_CODES.html"
+        errorLine1="        targetSdk 34"
+        errorLine2="        ~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\build.gradle"
+            line="12"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="SdCardPath"
+        severity="Warning"
+        message="Do not hardcode &quot;/sdcard/&quot;; use `Environment.getExternalStorageDirectory().getPath()` instead"
+        category="Correctness"
+        priority="6"
+        summary="Hardcoded reference to `/sdcard`"
+        explanation="Your code should not reference the `/sdcard` path directly; instead use `Environment.getExternalStorageDirectory().getPath()`.&#xA;&#xA;Similarly, do not reference the `/data/data/` path directly; it can vary in multi-user scenarios. Instead, use `Context.getFilesDir().getPath()`."
+        url="https://developer.android.com/training/data-storage#filesExternal"
+        urls="https://developer.android.com/training/data-storage#filesExternal"
+        errorLine1="    public static final String CONFIG_PATH = &quot;/sdcard/TouchSprite/config/cancel_attack.json&quot;;"
+        errorLine2="                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\io\ConfigIO.java"
+            line="17"
+            column="46"/>
+    </issue>
+
+    <issue
+        id="SdCardPath"
+        severity="Warning"
+        message="Do not hardcode &quot;/sdcard/&quot;; use `Environment.getExternalStorageDirectory().getPath()` instead"
+        category="Correctness"
+        priority="6"
+        summary="Hardcoded reference to `/sdcard`"
+        explanation="Your code should not reference the `/sdcard` path directly; instead use `Environment.getExternalStorageDirectory().getPath()`.&#xA;&#xA;Similarly, do not reference the `/data/data/` path directly; it can vary in multi-user scenarios. Instead, use `Context.getFilesDir().getPath()`."
+        url="https://developer.android.com/training/data-storage#filesExternal"
+        urls="https://developer.android.com/training/data-storage#filesExternal"
+        errorLine1="    public static final String CONFIG_PATH2 = &quot;/sdcard/Android/data/com.touchsprite.android/files/TouchSprite/config/cancel_attack.json&quot;;"
+        errorLine2="                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\io\ConfigIO.java"
+            line="18"
+            column="47"/>
+    </issue>
+
+    <issue
+        id="SdCardPath"
+        severity="Warning"
+        message="Do not hardcode &quot;/sdcard/&quot;; use `Environment.getExternalStorageDirectory().getPath()` instead"
+        category="Correctness"
+        priority="6"
+        summary="Hardcoded reference to `/sdcard`"
+        explanation="Your code should not reference the `/sdcard` path directly; instead use `Environment.getExternalStorageDirectory().getPath()`.&#xA;&#xA;Similarly, do not reference the `/data/data/` path directly; it can vary in multi-user scenarios. Instead, use `Context.getFilesDir().getPath()`."
+        url="https://developer.android.com/training/data-storage#filesExternal"
+        urls="https://developer.android.com/training/data-storage#filesExternal"
+        errorLine1="            j.put(&quot;img&quot;, &quot;/sdcard/TouchSprite/lua/auto.png&quot;);"
+        errorLine2="                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\io\ConfigIO.java"
+            line="24"
+            column="26"/>
+    </issue>
+
+    <issue
+        id="SdCardPath"
+        severity="Warning"
+        message="Do not hardcode &quot;/sdcard/&quot;; use `Environment.getExternalStorageDirectory().getPath()` instead"
+        category="Correctness"
+        priority="6"
+        summary="Hardcoded reference to `/sdcard`"
+        explanation="Your code should not reference the `/sdcard` path directly; instead use `Environment.getExternalStorageDirectory().getPath()`.&#xA;&#xA;Similarly, do not reference the `/data/data/` path directly; it can vary in multi-user scenarios. Instead, use `Context.getFilesDir().getPath()`."
+        url="https://developer.android.com/training/data-storage#filesExternal"
+        urls="https://developer.android.com/training/data-storage#filesExternal"
+        errorLine1="                try { truncate(new File(&quot;/sdcard/TouchSprite/log/cancel_attack.log&quot;)); } catch (Exception ignored) {}"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\io\LogCleaner.java"
+            line="16"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="SdCardPath"
+        severity="Warning"
+        message="Do not hardcode &quot;/sdcard/&quot;; use `Environment.getExternalStorageDirectory().getPath()` instead"
+        category="Correctness"
+        priority="6"
+        summary="Hardcoded reference to `/sdcard`"
+        explanation="Your code should not reference the `/sdcard` path directly; instead use `Environment.getExternalStorageDirectory().getPath()`.&#xA;&#xA;Similarly, do not reference the `/data/data/` path directly; it can vary in multi-user scenarios. Instead, use `Context.getFilesDir().getPath()`."
+        url="https://developer.android.com/training/data-storage#filesExternal"
+        urls="https://developer.android.com/training/data-storage#filesExternal"
+        errorLine1="                try { truncate(new File(&quot;/sdcard/TouchSprite/log/error.log&quot;)); } catch (Exception ignored) {}"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\io\LogCleaner.java"
+            line="17"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="SdCardPath"
+        severity="Warning"
+        message="Do not hardcode &quot;/sdcard/&quot;; use `Environment.getExternalStorageDirectory().getPath()` instead"
+        category="Correctness"
+        priority="6"
+        summary="Hardcoded reference to `/sdcard`"
+        explanation="Your code should not reference the `/sdcard` path directly; instead use `Environment.getExternalStorageDirectory().getPath()`.&#xA;&#xA;Similarly, do not reference the `/data/data/` path directly; it can vary in multi-user scenarios. Instead, use `Context.getFilesDir().getPath()`."
+        url="https://developer.android.com/training/data-storage#filesExternal"
+        urls="https://developer.android.com/training/data-storage#filesExternal"
+        errorLine1="                try { truncate(new File(&quot;/sdcard/Android/data/com.touchsprite.android/files/TouchSprite/log/cancel_attack.log&quot;)); } catch (Exception ignored) {}"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\io\LogCleaner.java"
+            line="18"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="SdCardPath"
+        severity="Warning"
+        message="Do not hardcode &quot;/sdcard/&quot;; use `Environment.getExternalStorageDirectory().getPath()` instead"
+        category="Correctness"
+        priority="6"
+        summary="Hardcoded reference to `/sdcard`"
+        explanation="Your code should not reference the `/sdcard` path directly; instead use `Environment.getExternalStorageDirectory().getPath()`.&#xA;&#xA;Similarly, do not reference the `/data/data/` path directly; it can vary in multi-user scenarios. Instead, use `Context.getFilesDir().getPath()`."
+        url="https://developer.android.com/training/data-storage#filesExternal"
+        urls="https://developer.android.com/training/data-storage#filesExternal"
+        errorLine1="                try { truncate(new File(&quot;/sdcard/Android/data/com.touchsprite.android/files/TouchSprite/log/error.log&quot;)); } catch (Exception ignored) {}"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\io\LogCleaner.java"
+            line="19"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="SdCardPath"
+        severity="Warning"
+        message="Do not hardcode &quot;/sdcard/&quot;; use `Environment.getExternalStorageDirectory().getPath()` instead"
+        category="Correctness"
+        priority="6"
+        summary="Hardcoded reference to `/sdcard`"
+        explanation="Your code should not reference the `/sdcard` path directly; instead use `Environment.getExternalStorageDirectory().getPath()`.&#xA;&#xA;Similarly, do not reference the `/data/data/` path directly; it can vary in multi-user scenarios. Instead, use `Context.getFilesDir().getPath()`."
+        url="https://developer.android.com/training/data-storage#filesExternal"
+        urls="https://developer.android.com/training/data-storage#filesExternal"
+        errorLine1="        return &quot;/sdcard/TouchSprite/log&quot;;"
+        errorLine2="               ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\io\LogIO.java"
+            line="12"
+            column="16"/>
+    </issue>
+
+    <issue
+        id="SdCardPath"
+        severity="Warning"
+        message="Do not hardcode &quot;/sdcard/&quot;; use `Environment.getExternalStorageDirectory().getPath()` instead"
+        category="Correctness"
+        priority="6"
+        summary="Hardcoded reference to `/sdcard`"
+        explanation="Your code should not reference the `/sdcard` path directly; instead use `Environment.getExternalStorageDirectory().getPath()`.&#xA;&#xA;Similarly, do not reference the `/data/data/` path directly; it can vary in multi-user scenarios. Instead, use `Context.getFilesDir().getPath()`."
+        url="https://developer.android.com/training/data-storage#filesExternal"
+        urls="https://developer.android.com/training/data-storage#filesExternal"
+        errorLine1="        String path = &quot;/sdcard/TouchSprite/log/&quot; + name;"
+        errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\ui\LogsActivity.java"
+            line="41"
+            column="23"/>
+    </issue>
+
+    <issue
+        id="SdCardPath"
+        severity="Warning"
+        message="Do not hardcode &quot;/sdcard/&quot;; use `Environment.getExternalStorageDirectory().getPath()` instead"
+        category="Correctness"
+        priority="6"
+        summary="Hardcoded reference to `/sdcard`"
+        explanation="Your code should not reference the `/sdcard` path directly; instead use `Environment.getExternalStorageDirectory().getPath()`.&#xA;&#xA;Similarly, do not reference the `/data/data/` path directly; it can vary in multi-user scenarios. Instead, use `Context.getFilesDir().getPath()`."
+        url="https://developer.android.com/training/data-storage#filesExternal"
+        urls="https://developer.android.com/training/data-storage#filesExternal"
+        errorLine1="            etImg.setText(j.optString(&quot;img&quot;, &quot;/sdcard/TouchSprite/lua/auto.png&quot;));"
+        errorLine2="                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\ui\SettingsActivity.java"
+            line="65"
+            column="46"/>
+    </issue>
+
+    <issue
+        id="SdCardPath"
+        severity="Warning"
+        message="Do not hardcode &quot;/sdcard/&quot;; use `Environment.getExternalStorageDirectory().getPath()` instead"
+        category="Correctness"
+        priority="6"
+        summary="Hardcoded reference to `/sdcard`"
+        explanation="Your code should not reference the `/sdcard` path directly; instead use `Environment.getExternalStorageDirectory().getPath()`.&#xA;&#xA;Similarly, do not reference the `/data/data/` path directly; it can vary in multi-user scenarios. Instead, use `Context.getFilesDir().getPath()`."
+        url="https://developer.android.com/training/data-storage#filesExternal"
+        urls="https://developer.android.com/training/data-storage#filesExternal"
+        errorLine1="            j.put(&quot;img&quot;, text(etImg, &quot;/sdcard/TouchSprite/lua/auto.png&quot;));"
+        errorLine2="                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\ui\SettingsActivity.java"
+            line="86"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        severity="Warning"
+        message="A newer version of androidx.appcompat:appcompat than 1.6.1 is available: 1.7.0"
+        category="Correctness"
+        priority="4"
+        summary="Obsolete Gradle Dependency"
+        explanation="This detector looks for usages of libraries where the version you are using is not the current stable release. Using older versions is fine, and there are cases where you deliberately want to stick with an older version. However, you may simply not be aware that a more recent version is available, and that is what this lint check helps find."
+        errorLine1="    implementation &apos;androidx.appcompat:appcompat:1.6.1&apos;"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\build.gradle"
+            line="33"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="UnspecifiedRegisterReceiverFlag"
+        severity="Warning"
+        message="`stateReceiver` \&#xA;is missing `RECEIVER_EXPORTED` or `RECEIVER_NOT_EXPORTED` flag for unprotected \&#xA;broadcasts registered for com.iceflow.roclicktaq.ACTION_RUNNER_STATE"
+        category="Security"
+        priority="5"
+        summary="Missing `registerReceiver()` exported flag"
+        explanation="A future platform release will require all receivers registering for non-system broadcasts to include a flag indicating the receiver&apos;s exported state. Apps registering for non-system broadcasts should use the `ContextCompat#registerReceiver` APIs with flags set to either `RECEIVER_EXPORTED` or `RECEIVER_NOT_EXPORTED`.&#xA;&#xA;If you are not expecting broadcasts from other apps on the device, register your receiver with `RECEIVER_NOT_EXPORTED` to protect your receiver on all platform releases."
+        url="https://developer.android.com/reference/androidx/core/content/ContextCompat#registerReceiver(android.content.Context,android.content.BroadcastReceiver,android.content.IntentFilter,int)"
+        urls="https://developer.android.com/reference/androidx/core/content/ContextCompat#registerReceiver(android.content.Context,android.content.BroadcastReceiver,android.content.IntentFilter,int)"
+        errorLine1="            registerReceiver(stateReceiver, f);"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\ui\MainActivity.java"
+            line="129"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnspecifiedRegisterReceiverFlag"
+        severity="Warning"
+        message="`stateReceiver` \&#xA;is missing `RECEIVER_EXPORTED` or `RECEIVER_NOT_EXPORTED` flag for unprotected \&#xA;broadcasts registered for com.iceflow.roclicktaq.ACTION_RUNNER_STATE"
+        category="Security"
+        priority="5"
+        summary="Missing `registerReceiver()` exported flag"
+        explanation="A future platform release will require all receivers registering for non-system broadcasts to include a flag indicating the receiver&apos;s exported state. Apps registering for non-system broadcasts should use the `ContextCompat#registerReceiver` APIs with flags set to either `RECEIVER_EXPORTED` or `RECEIVER_NOT_EXPORTED`.&#xA;&#xA;If you are not expecting broadcasts from other apps on the device, register your receiver with `RECEIVER_NOT_EXPORTED` to protect your receiver on all platform releases."
+        url="https://developer.android.com/reference/androidx/core/content/ContextCompat#registerReceiver(android.content.Context,android.content.BroadcastReceiver,android.content.IntentFilter,int)"
+        urls="https://developer.android.com/reference/androidx/core/content/ContextCompat#registerReceiver(android.content.Context,android.content.BroadcastReceiver,android.content.IntentFilter,int)"
+        errorLine1="            registerReceiver(stateReceiver, f);"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\overlay\OverlayService.java"
+            line="210"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.drawable.ic_pause_bars` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests =true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests =true.&#xA;,"
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\drawable\ic_pause_bars.xml"
+            line="1"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="MissingApplicationIcon"
+        severity="Warning"
+        message="Should explicitly set `android:icon`, there is no default"
+        category="Usability:Icons"
+        priority="5"
+        summary="Missing application icon"
+        explanation="You should set an icon for the application as whole because there is no default. This attribute must be set as a reference to a drawable resource containing the image (for example `@drawable/icon`)."
+        url="https://developer.android.com/studio/publish/preparing#publishing-configure"
+        urls="https://developer.android.com/studio/publish/preparing#publishing-configure"
+        errorLine1="    &lt;application"
+        errorLine2="     ~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\AndroidManifest.xml"
+            line="16"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ButtonStyle"
+        severity="Warning"
+        message="Buttons in button bars should be borderless; use `style=&quot;?android:attr/buttonBarButtonStyle&quot;` (and `?android:attr/buttonBarStyle` on the parent)"
+        category="Usability"
+        priority="5"
+        summary="Button should be borderless"
+        explanation="Button bars typically use a borderless style for the buttons. Set the `style=&quot;?android:attr/buttonBarButtonStyle&quot;` attribute on each of the buttons, and set `style=&quot;?android:attr/buttonBarStyle&quot;` on the parent layout"
+        url="https://material.io/components/dialogs/"
+        urls="https://material.io/components/dialogs/"
+        errorLine1="            &lt;Button"
+        errorLine2="             ~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="136"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="ButtonStyle"
+        severity="Warning"
+        message="Buttons in button bars should be borderless; use `style=&quot;?android:attr/buttonBarButtonStyle&quot;` (and `?android:attr/buttonBarStyle` on the parent)"
+        category="Usability"
+        priority="5"
+        summary="Button should be borderless"
+        explanation="Button bars typically use a borderless style for the buttons. Set the `style=&quot;?android:attr/buttonBarButtonStyle&quot;` attribute on each of the buttons, and set `style=&quot;?android:attr/buttonBarStyle&quot;` on the parent layout"
+        url="https://material.io/components/dialogs/"
+        urls="https://material.io/components/dialogs/"
+        errorLine1="            &lt;Button"
+        errorLine2="             ~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="142"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="TextFields"
+        severity="Warning"
+        message="This text field does not specify an `inputType`"
+        category="Usability"
+        priority="5"
+        summary="Missing `inputType`"
+        explanation="Providing an `inputType` attribute on a text field improves usability because depending on the data to be input, optimized keyboards can be shown to the user (such as just digits and parentheses for a phone number). &#xA;&#xA;The lint detector also looks at the `id` of the view, and if the id offers a hint of the purpose of the field (for example, the `id` contains the phrase `phone` or `email`), then lint will also ensure that the `inputType` contains the corresponding type attributes.&#xA;&#xA;If you really want to keep the text field generic, you can suppress this warning by setting `inputType=&quot;text&quot;`."
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="24"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        severity="Warning"
+        message="Missing `autofillHints` attribute"
+        category="Usability"
+        priority="3"
+        summary="Use Autofill"
+        explanation="Specify an `autofillHints` attribute when targeting SDK version 26 or higher or explicitly specify that the view is not important for autofill. Your app can help an autofill service classify the data correctly by providing the meaning of each view that could be autofillable, such as views representing usernames, passwords, credit card fields, email addresses, etc.&#xA;&#xA;The hints can have any value, but it is recommended to use predefined values like &apos;username&apos; for a username or &apos;creditCardNumber&apos; for a credit card number. For a list of all predefined autofill hint constants, see the `AUTOFILL_HINT_` constants in the `View` reference at https://developer.android.com/reference/android/view/View.html.&#xA;&#xA;You can mark a view unimportant for autofill by specifying an `importantForAutofill` attribute on that view or a parent view. See https://developer.android.com/reference/android/view/View.html#setImportantForAutofill(int)."
+        url="https://developer.android.com/guide/topics/text/autofill.html"
+        urls="https://developer.android.com/guide/topics/text/autofill.html"
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="24"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        severity="Warning"
+        message="Missing `autofillHints` attribute"
+        category="Usability"
+        priority="3"
+        summary="Use Autofill"
+        explanation="Specify an `autofillHints` attribute when targeting SDK version 26 or higher or explicitly specify that the view is not important for autofill. Your app can help an autofill service classify the data correctly by providing the meaning of each view that could be autofillable, such as views representing usernames, passwords, credit card fields, email addresses, etc.&#xA;&#xA;The hints can have any value, but it is recommended to use predefined values like &apos;username&apos; for a username or &apos;creditCardNumber&apos; for a credit card number. For a list of all predefined autofill hint constants, see the `AUTOFILL_HINT_` constants in the `View` reference at https://developer.android.com/reference/android/view/View.html.&#xA;&#xA;You can mark a view unimportant for autofill by specifying an `importantForAutofill` attribute on that view or a parent view. See https://developer.android.com/reference/android/view/View.html#setImportantForAutofill(int)."
+        url="https://developer.android.com/guide/topics/text/autofill.html"
+        urls="https://developer.android.com/guide/topics/text/autofill.html"
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="34"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        severity="Warning"
+        message="Missing `autofillHints` attribute"
+        category="Usability"
+        priority="3"
+        summary="Use Autofill"
+        explanation="Specify an `autofillHints` attribute when targeting SDK version 26 or higher or explicitly specify that the view is not important for autofill. Your app can help an autofill service classify the data correctly by providing the meaning of each view that could be autofillable, such as views representing usernames, passwords, credit card fields, email addresses, etc.&#xA;&#xA;The hints can have any value, but it is recommended to use predefined values like &apos;username&apos; for a username or &apos;creditCardNumber&apos; for a credit card number. For a list of all predefined autofill hint constants, see the `AUTOFILL_HINT_` constants in the `View` reference at https://developer.android.com/reference/android/view/View.html.&#xA;&#xA;You can mark a view unimportant for autofill by specifying an `importantForAutofill` attribute on that view or a parent view. See https://developer.android.com/reference/android/view/View.html#setImportantForAutofill(int)."
+        url="https://developer.android.com/guide/topics/text/autofill.html"
+        urls="https://developer.android.com/guide/topics/text/autofill.html"
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="45"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        severity="Warning"
+        message="Missing `autofillHints` attribute"
+        category="Usability"
+        priority="3"
+        summary="Use Autofill"
+        explanation="Specify an `autofillHints` attribute when targeting SDK version 26 or higher or explicitly specify that the view is not important for autofill. Your app can help an autofill service classify the data correctly by providing the meaning of each view that could be autofillable, such as views representing usernames, passwords, credit card fields, email addresses, etc.&#xA;&#xA;The hints can have any value, but it is recommended to use predefined values like &apos;username&apos; for a username or &apos;creditCardNumber&apos; for a credit card number. For a list of all predefined autofill hint constants, see the `AUTOFILL_HINT_` constants in the `View` reference at https://developer.android.com/reference/android/view/View.html.&#xA;&#xA;You can mark a view unimportant for autofill by specifying an `importantForAutofill` attribute on that view or a parent view. See https://developer.android.com/reference/android/view/View.html#setImportantForAutofill(int)."
+        url="https://developer.android.com/guide/topics/text/autofill.html"
+        urls="https://developer.android.com/guide/topics/text/autofill.html"
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="56"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        severity="Warning"
+        message="Missing `autofillHints` attribute"
+        category="Usability"
+        priority="3"
+        summary="Use Autofill"
+        explanation="Specify an `autofillHints` attribute when targeting SDK version 26 or higher or explicitly specify that the view is not important for autofill. Your app can help an autofill service classify the data correctly by providing the meaning of each view that could be autofillable, such as views representing usernames, passwords, credit card fields, email addresses, etc.&#xA;&#xA;The hints can have any value, but it is recommended to use predefined values like &apos;username&apos; for a username or &apos;creditCardNumber&apos; for a credit card number. For a list of all predefined autofill hint constants, see the `AUTOFILL_HINT_` constants in the `View` reference at https://developer.android.com/reference/android/view/View.html.&#xA;&#xA;You can mark a view unimportant for autofill by specifying an `importantForAutofill` attribute on that view or a parent view. See https://developer.android.com/reference/android/view/View.html#setImportantForAutofill(int)."
+        url="https://developer.android.com/guide/topics/text/autofill.html"
+        urls="https://developer.android.com/guide/topics/text/autofill.html"
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="67"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        severity="Warning"
+        message="Missing `autofillHints` attribute"
+        category="Usability"
+        priority="3"
+        summary="Use Autofill"
+        explanation="Specify an `autofillHints` attribute when targeting SDK version 26 or higher or explicitly specify that the view is not important for autofill. Your app can help an autofill service classify the data correctly by providing the meaning of each view that could be autofillable, such as views representing usernames, passwords, credit card fields, email addresses, etc.&#xA;&#xA;The hints can have any value, but it is recommended to use predefined values like &apos;username&apos; for a username or &apos;creditCardNumber&apos; for a credit card number. For a list of all predefined autofill hint constants, see the `AUTOFILL_HINT_` constants in the `View` reference at https://developer.android.com/reference/android/view/View.html.&#xA;&#xA;You can mark a view unimportant for autofill by specifying an `importantForAutofill` attribute on that view or a parent view. See https://developer.android.com/reference/android/view/View.html#setImportantForAutofill(int)."
+        url="https://developer.android.com/guide/topics/text/autofill.html"
+        urls="https://developer.android.com/guide/topics/text/autofill.html"
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="78"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        severity="Warning"
+        message="Missing `autofillHints` attribute"
+        category="Usability"
+        priority="3"
+        summary="Use Autofill"
+        explanation="Specify an `autofillHints` attribute when targeting SDK version 26 or higher or explicitly specify that the view is not important for autofill. Your app can help an autofill service classify the data correctly by providing the meaning of each view that could be autofillable, such as views representing usernames, passwords, credit card fields, email addresses, etc.&#xA;&#xA;The hints can have any value, but it is recommended to use predefined values like &apos;username&apos; for a username or &apos;creditCardNumber&apos; for a credit card number. For a list of all predefined autofill hint constants, see the `AUTOFILL_HINT_` constants in the `View` reference at https://developer.android.com/reference/android/view/View.html.&#xA;&#xA;You can mark a view unimportant for autofill by specifying an `importantForAutofill` attribute on that view or a parent view. See https://developer.android.com/reference/android/view/View.html#setImportantForAutofill(int)."
+        url="https://developer.android.com/guide/topics/text/autofill.html"
+        urls="https://developer.android.com/guide/topics/text/autofill.html"
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="89"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        severity="Warning"
+        message="Missing `autofillHints` attribute"
+        category="Usability"
+        priority="3"
+        summary="Use Autofill"
+        explanation="Specify an `autofillHints` attribute when targeting SDK version 26 or higher or explicitly specify that the view is not important for autofill. Your app can help an autofill service classify the data correctly by providing the meaning of each view that could be autofillable, such as views representing usernames, passwords, credit card fields, email addresses, etc.&#xA;&#xA;The hints can have any value, but it is recommended to use predefined values like &apos;username&apos; for a username or &apos;creditCardNumber&apos; for a credit card number. For a list of all predefined autofill hint constants, see the `AUTOFILL_HINT_` constants in the `View` reference at https://developer.android.com/reference/android/view/View.html.&#xA;&#xA;You can mark a view unimportant for autofill by specifying an `importantForAutofill` attribute on that view or a parent view. See https://developer.android.com/reference/android/view/View.html#setImportantForAutofill(int)."
+        url="https://developer.android.com/guide/topics/text/autofill.html"
+        urls="https://developer.android.com/guide/topics/text/autofill.html"
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="95"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        severity="Warning"
+        message="Missing `autofillHints` attribute"
+        category="Usability"
+        priority="3"
+        summary="Use Autofill"
+        explanation="Specify an `autofillHints` attribute when targeting SDK version 26 or higher or explicitly specify that the view is not important for autofill. Your app can help an autofill service classify the data correctly by providing the meaning of each view that could be autofillable, such as views representing usernames, passwords, credit card fields, email addresses, etc.&#xA;&#xA;The hints can have any value, but it is recommended to use predefined values like &apos;username&apos; for a username or &apos;creditCardNumber&apos; for a credit card number. For a list of all predefined autofill hint constants, see the `AUTOFILL_HINT_` constants in the `View` reference at https://developer.android.com/reference/android/view/View.html.&#xA;&#xA;You can mark a view unimportant for autofill by specifying an `importantForAutofill` attribute on that view or a parent view. See https://developer.android.com/reference/android/view/View.html#setImportantForAutofill(int)."
+        url="https://developer.android.com/guide/topics/text/autofill.html"
+        urls="https://developer.android.com/guide/topics/text/autofill.html"
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="106"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        severity="Warning"
+        message="Missing `autofillHints` attribute"
+        category="Usability"
+        priority="3"
+        summary="Use Autofill"
+        explanation="Specify an `autofillHints` attribute when targeting SDK version 26 or higher or explicitly specify that the view is not important for autofill. Your app can help an autofill service classify the data correctly by providing the meaning of each view that could be autofillable, such as views representing usernames, passwords, credit card fields, email addresses, etc.&#xA;&#xA;The hints can have any value, but it is recommended to use predefined values like &apos;username&apos; for a username or &apos;creditCardNumber&apos; for a credit card number. For a list of all predefined autofill hint constants, see the `AUTOFILL_HINT_` constants in the `View` reference at https://developer.android.com/reference/android/view/View.html.&#xA;&#xA;You can mark a view unimportant for autofill by specifying an `importantForAutofill` attribute on that view or a parent view. See https://developer.android.com/reference/android/view/View.html#setImportantForAutofill(int)."
+        url="https://developer.android.com/guide/topics/text/autofill.html"
+        urls="https://developer.android.com/guide/topics/text/autofill.html"
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="112"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        severity="Warning"
+        message="Missing `autofillHints` attribute"
+        category="Usability"
+        priority="3"
+        summary="Use Autofill"
+        explanation="Specify an `autofillHints` attribute when targeting SDK version 26 or higher or explicitly specify that the view is not important for autofill. Your app can help an autofill service classify the data correctly by providing the meaning of each view that could be autofillable, such as views representing usernames, passwords, credit card fields, email addresses, etc.&#xA;&#xA;The hints can have any value, but it is recommended to use predefined values like &apos;username&apos; for a username or &apos;creditCardNumber&apos; for a credit card number. For a list of all predefined autofill hint constants, see the `AUTOFILL_HINT_` constants in the `View` reference at https://developer.android.com/reference/android/view/View.html.&#xA;&#xA;You can mark a view unimportant for autofill by specifying an `importantForAutofill` attribute on that view or a parent view. See https://developer.android.com/reference/android/view/View.html#setImportantForAutofill(int)."
+        url="https://developer.android.com/guide/topics/text/autofill.html"
+        urls="https://developer.android.com/guide/topics/text/autofill.html"
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="118"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Autofill"
+        severity="Warning"
+        message="Missing `autofillHints` attribute"
+        category="Usability"
+        priority="3"
+        summary="Use Autofill"
+        explanation="Specify an `autofillHints` attribute when targeting SDK version 26 or higher or explicitly specify that the view is not important for autofill. Your app can help an autofill service classify the data correctly by providing the meaning of each view that could be autofillable, such as views representing usernames, passwords, credit card fields, email addresses, etc.&#xA;&#xA;The hints can have any value, but it is recommended to use predefined values like &apos;username&apos; for a username or &apos;creditCardNumber&apos; for a credit card number. For a list of all predefined autofill hint constants, see the `AUTOFILL_HINT_` constants in the `View` reference at https://developer.android.com/reference/android/view/View.html.&#xA;&#xA;You can mark a view unimportant for autofill by specifying an `importantForAutofill` attribute on that view or a parent view. See https://developer.android.com/reference/android/view/View.html#setImportantForAutofill(int)."
+        url="https://developer.android.com/guide/topics/text/autofill.html"
+        urls="https://developer.android.com/guide/topics/text/autofill.html"
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="124"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        severity="Warning"
+        message="Custom view ``ImageView`` has `setOnTouchListener` called on it but does not override `performClick`"
+        category="Accessibility"
+        priority="6"
+        summary="Accessibility in Custom Views"
+        explanation="If a `View` that overrides `onTouchEvent` or uses an `OnTouchListener` does not also implement `performClick` and call it when clicks are detected, the `View` may not handle accessibility actions properly. Logic handling the click actions should ideally be placed in `View#performClick` as some accessibility services invoke `performClick` when a click action should occur."
+        errorLine1="        aim.setOnTouchListener(new View.OnTouchListener() {"
+        errorLine2="        ^">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\overlay\AimOverlayService.java"
+            line="80"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        severity="Warning"
+        message="`onTouch` should call `View#performClick` when a click is detected"
+        category="Accessibility"
+        priority="6"
+        summary="Accessibility in Custom Views"
+        explanation="If a `View` that overrides `onTouchEvent` or uses an `OnTouchListener` does not also implement `performClick` and call it when clicks are detected, the `View` may not handle accessibility actions properly. Logic handling the click actions should ideally be placed in `View#performClick` as some accessibility services invoke `performClick` when a click action should occur."
+        errorLine1="            public boolean onTouch(View v, MotionEvent e) {"
+        errorLine2="                           ~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\overlay\AimOverlayService.java"
+            line="85"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        severity="Warning"
+        message="Custom view ``ImageView`` has `setOnTouchListener` called on it but does not override `performClick`"
+        category="Accessibility"
+        priority="6"
+        summary="Accessibility in Custom Views"
+        explanation="If a `View` that overrides `onTouchEvent` or uses an `OnTouchListener` does not also implement `performClick` and call it when clicks are detected, the `View` may not handle accessibility actions properly. Logic handling the click actions should ideally be placed in `View#performClick` as some accessibility services invoke `performClick` when a click action should occur."
+        errorLine1="        aim.setOnTouchListener(new View.OnTouchListener() {"
+        errorLine2="        ^">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\overlay\AimOverlayServiceBlack.java"
+            line="80"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        severity="Warning"
+        message="`onTouch` should call `View#performClick` when a click is detected"
+        category="Accessibility"
+        priority="6"
+        summary="Accessibility in Custom Views"
+        explanation="If a `View` that overrides `onTouchEvent` or uses an `OnTouchListener` does not also implement `performClick` and call it when clicks are detected, the `View` may not handle accessibility actions properly. Logic handling the click actions should ideally be placed in `View#performClick` as some accessibility services invoke `performClick` when a click action should occur."
+        errorLine1="            public boolean onTouch(View v, MotionEvent e) {"
+        errorLine2="                           ~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\overlay\AimOverlayServiceBlack.java"
+            line="85"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        severity="Warning"
+        message="Custom view ``ImageView`` has `setOnTouchListener` called on it but does not override `performClick`"
+        category="Accessibility"
+        priority="6"
+        summary="Accessibility in Custom Views"
+        explanation="If a `View` that overrides `onTouchEvent` or uses an `OnTouchListener` does not also implement `performClick` and call it when clicks are detected, the `View` may not handle accessibility actions properly. Logic handling the click actions should ideally be placed in `View#performClick` as some accessibility services invoke `performClick` when a click action should occur."
+        errorLine1="        aim.setOnTouchListener(new View.OnTouchListener() {"
+        errorLine2="        ^">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\overlay\AimOverlayServiceRed.java"
+            line="80"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        severity="Warning"
+        message="`onTouch` should call `View#performClick` when a click is detected"
+        category="Accessibility"
+        priority="6"
+        summary="Accessibility in Custom Views"
+        explanation="If a `View` that overrides `onTouchEvent` or uses an `OnTouchListener` does not also implement `performClick` and call it when clicks are detected, the `View` may not handle accessibility actions properly. Logic handling the click actions should ideally be placed in `View#performClick` as some accessibility services invoke `performClick` when a click action should occur."
+        errorLine1="            public boolean onTouch(View v, MotionEvent e) {"
+        errorLine2="                           ~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\overlay\AimOverlayServiceRed.java"
+            line="85"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        severity="Warning"
+        message="Custom view ``LinearLayout`` has `setOnTouchListener` called on it but does not override `performClick`"
+        category="Accessibility"
+        priority="6"
+        summary="Accessibility in Custom Views"
+        explanation="If a `View` that overrides `onTouchEvent` or uses an `OnTouchListener` does not also implement `performClick` and call it when clicks are detected, the `View` may not handle accessibility actions properly. Logic handling the click actions should ideally be placed in `View#performClick` as some accessibility services invoke `performClick` when a click action should occur."
+        errorLine1="        root.setOnTouchListener(new View.OnTouchListener() {"
+        errorLine2="        ^">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\overlay\OverlayService.java"
+            line="162"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        severity="Warning"
+        message="`onTouch` should call `View#performClick` when a click is detected"
+        category="Accessibility"
+        priority="6"
+        summary="Accessibility in Custom Views"
+        explanation="If a `View` that overrides `onTouchEvent` or uses an `OnTouchListener` does not also implement `performClick` and call it when clicks are detected, the `View` may not handle accessibility actions properly. Logic handling the click actions should ideally be placed in `View#performClick` as some accessibility services invoke `performClick` when a click action should occur."
+        errorLine1="            public boolean onTouch(View v, android.view.MotionEvent e) {"
+        errorLine2="                           ~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\java\com\iceflow\roclicktaq\overlay\OverlayService.java"
+            line="163"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="LabelFor"
+        severity="Warning"
+        message="Missing accessibility label: provide either a view with an `android:labelFor` that references this view or provide an `android:hint`"
+        category="Accessibility"
+        priority="2"
+        summary="Missing accessibility label"
+        explanation="Editable text fields should provide an `android:hint` or, provided your `minSdkVersion` is at least 17, they may be referenced by a view with a `android:labelFor` attribute.&#xA;&#xA;When using `android:labelFor`, be sure to provide an `android:text` or an `android:contentDescription`.&#xA;&#xA;If your view is labeled but by a label in a different layout which includes this one, just suppress this warning from lint."
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="24"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="LabelFor"
+        severity="Warning"
+        message="Missing accessibility label: provide either a view with an `android:labelFor` that references this view or provide an `android:hint`"
+        category="Accessibility"
+        priority="2"
+        summary="Missing accessibility label"
+        explanation="Editable text fields should provide an `android:hint` or, provided your `minSdkVersion` is at least 17, they may be referenced by a view with a `android:labelFor` attribute.&#xA;&#xA;When using `android:labelFor`, be sure to provide an `android:text` or an `android:contentDescription`.&#xA;&#xA;If your view is labeled but by a label in a different layout which includes this one, just suppress this warning from lint."
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="34"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="LabelFor"
+        severity="Warning"
+        message="Missing accessibility label: provide either a view with an `android:labelFor` that references this view or provide an `android:hint`"
+        category="Accessibility"
+        priority="2"
+        summary="Missing accessibility label"
+        explanation="Editable text fields should provide an `android:hint` or, provided your `minSdkVersion` is at least 17, they may be referenced by a view with a `android:labelFor` attribute.&#xA;&#xA;When using `android:labelFor`, be sure to provide an `android:text` or an `android:contentDescription`.&#xA;&#xA;If your view is labeled but by a label in a different layout which includes this one, just suppress this warning from lint."
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="45"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="LabelFor"
+        severity="Warning"
+        message="Missing accessibility label: provide either a view with an `android:labelFor` that references this view or provide an `android:hint`"
+        category="Accessibility"
+        priority="2"
+        summary="Missing accessibility label"
+        explanation="Editable text fields should provide an `android:hint` or, provided your `minSdkVersion` is at least 17, they may be referenced by a view with a `android:labelFor` attribute.&#xA;&#xA;When using `android:labelFor`, be sure to provide an `android:text` or an `android:contentDescription`.&#xA;&#xA;If your view is labeled but by a label in a different layout which includes this one, just suppress this warning from lint."
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="56"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="LabelFor"
+        severity="Warning"
+        message="Missing accessibility label: provide either a view with an `android:labelFor` that references this view or provide an `android:hint`"
+        category="Accessibility"
+        priority="2"
+        summary="Missing accessibility label"
+        explanation="Editable text fields should provide an `android:hint` or, provided your `minSdkVersion` is at least 17, they may be referenced by a view with a `android:labelFor` attribute.&#xA;&#xA;When using `android:labelFor`, be sure to provide an `android:text` or an `android:contentDescription`.&#xA;&#xA;If your view is labeled but by a label in a different layout which includes this one, just suppress this warning from lint."
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="67"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="LabelFor"
+        severity="Warning"
+        message="Missing accessibility label: provide either a view with an `android:labelFor` that references this view or provide an `android:hint`"
+        category="Accessibility"
+        priority="2"
+        summary="Missing accessibility label"
+        explanation="Editable text fields should provide an `android:hint` or, provided your `minSdkVersion` is at least 17, they may be referenced by a view with a `android:labelFor` attribute.&#xA;&#xA;When using `android:labelFor`, be sure to provide an `android:text` or an `android:contentDescription`.&#xA;&#xA;If your view is labeled but by a label in a different layout which includes this one, just suppress this warning from lint."
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="78"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="LabelFor"
+        severity="Warning"
+        message="Missing accessibility label: provide either a view with an `android:labelFor` that references this view or provide an `android:hint`"
+        category="Accessibility"
+        priority="2"
+        summary="Missing accessibility label"
+        explanation="Editable text fields should provide an `android:hint` or, provided your `minSdkVersion` is at least 17, they may be referenced by a view with a `android:labelFor` attribute.&#xA;&#xA;When using `android:labelFor`, be sure to provide an `android:text` or an `android:contentDescription`.&#xA;&#xA;If your view is labeled but by a label in a different layout which includes this one, just suppress this warning from lint."
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="89"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="LabelFor"
+        severity="Warning"
+        message="Missing accessibility label: provide either a view with an `android:labelFor` that references this view or provide an `android:hint`"
+        category="Accessibility"
+        priority="2"
+        summary="Missing accessibility label"
+        explanation="Editable text fields should provide an `android:hint` or, provided your `minSdkVersion` is at least 17, they may be referenced by a view with a `android:labelFor` attribute.&#xA;&#xA;When using `android:labelFor`, be sure to provide an `android:text` or an `android:contentDescription`.&#xA;&#xA;If your view is labeled but by a label in a different layout which includes this one, just suppress this warning from lint."
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="95"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="LabelFor"
+        severity="Warning"
+        message="Missing accessibility label: provide either a view with an `android:labelFor` that references this view or provide an `android:hint`"
+        category="Accessibility"
+        priority="2"
+        summary="Missing accessibility label"
+        explanation="Editable text fields should provide an `android:hint` or, provided your `minSdkVersion` is at least 17, they may be referenced by a view with a `android:labelFor` attribute.&#xA;&#xA;When using `android:labelFor`, be sure to provide an `android:text` or an `android:contentDescription`.&#xA;&#xA;If your view is labeled but by a label in a different layout which includes this one, just suppress this warning from lint."
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="106"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="LabelFor"
+        severity="Warning"
+        message="Missing accessibility label: provide either a view with an `android:labelFor` that references this view or provide an `android:hint`"
+        category="Accessibility"
+        priority="2"
+        summary="Missing accessibility label"
+        explanation="Editable text fields should provide an `android:hint` or, provided your `minSdkVersion` is at least 17, they may be referenced by a view with a `android:labelFor` attribute.&#xA;&#xA;When using `android:labelFor`, be sure to provide an `android:text` or an `android:contentDescription`.&#xA;&#xA;If your view is labeled but by a label in a different layout which includes this one, just suppress this warning from lint."
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="112"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="LabelFor"
+        severity="Warning"
+        message="Missing accessibility label: provide either a view with an `android:labelFor` that references this view or provide an `android:hint`"
+        category="Accessibility"
+        priority="2"
+        summary="Missing accessibility label"
+        explanation="Editable text fields should provide an `android:hint` or, provided your `minSdkVersion` is at least 17, they may be referenced by a view with a `android:labelFor` attribute.&#xA;&#xA;When using `android:labelFor`, be sure to provide an `android:text` or an `android:contentDescription`.&#xA;&#xA;If your view is labeled but by a label in a different layout which includes this one, just suppress this warning from lint."
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="118"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="LabelFor"
+        severity="Warning"
+        message="Missing accessibility label: provide either a view with an `android:labelFor` that references this view or provide an `android:hint`"
+        category="Accessibility"
+        priority="2"
+        summary="Missing accessibility label"
+        explanation="Editable text fields should provide an `android:hint` or, provided your `minSdkVersion` is at least 17, they may be referenced by a view with a `android:labelFor` attribute.&#xA;&#xA;When using `android:labelFor`, be sure to provide an `android:text` or an `android:contentDescription`.&#xA;&#xA;If your view is labeled but by a label in a different layout which includes this one, just suppress this warning from lint."
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="124"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;刷新&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="        android:text=&quot;刷新&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_logs.xml"
+            line="17"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;申请所有文件访问&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="        android:text=&quot;申请所有文件访问&quot; />"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_main.xml"
+            line="12"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;设置参数&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="        android:text=&quot;设置参数&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_main.xml"
+            line="18"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;查看日志&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="        android:text=&quot;查看日志&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_main.xml"
+            line="25"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;打开触动精灵&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="        android:text=&quot;打开触动精灵&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_main.xml"
+            line="32"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;开始独立运行&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="        android:text=&quot;开始独立运行&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_main.xml"
+            line="38"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;停止独立运行&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="        android:text=&quot;停止独立运行&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_main.xml"
+            line="44"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;检测模式&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;检测模式&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="14"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;图片路径&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;图片路径&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="23"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;/sdcard/TouchSprite/lua/auto.png&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;/sdcard/TouchSprite/lua/auto.png&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="28"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;相似度[0.5-0.99]&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;相似度[0.5-0.99]&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="33"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;0.85&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;0.85&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="39"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;检测间隔(ms)&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;检测间隔(ms)&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="44"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;500&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;500&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="50"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;蓝色占比阈值(0-1)&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;蓝色占比阈值(0-1)&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="55"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;0.6&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;0.6&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="61"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;采样步长&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;采样步长&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="66"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;6&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;6&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="72"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;确认等待(ms)&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;确认等待(ms)&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="77"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;800&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;800&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="83"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;基准分辨率W/H&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;基准分辨率W/H&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="88"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;1080&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;1080&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="94"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;2280&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;2280&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="100"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;按钮区域边距 left/right/top/bottom&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;按钮区域边距 left/right/top/bottom&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="105"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;260&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;260&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="111"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;42&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;42&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="117"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;270&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;270&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="123"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;40&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            android:text=&quot;40&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="129"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;加载&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="                android:text=&quot;加载&quot; />"
+        errorLine2="                ~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="141"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;保存&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="                android:text=&quot;保存&quot; />"
+        errorLine2="                ~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app\src\main\res\layout\activity_settings.xml"
+            line="147"
+            column="17"/>
+    </issue>
+
+</issues>

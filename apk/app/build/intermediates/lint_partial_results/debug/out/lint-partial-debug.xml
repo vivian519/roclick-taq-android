@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<incidents format="6" by="lint 8.1.1" type="partial_results">
+    <map id="UnsafeIntentLaunch">
+            <map id="unprotected">
+                <entry
+                    name="com.iceflow.roclicktaq.ui.MainActivity"
+                    boolean="true"/>
+                <entry
+                    name="com.iceflow.roclicktaq.ui.CapturePermissionActivity"
+                    boolean="true"/>
+                <entry
+                    name="com.iceflow.roclicktaq.ui.PermissionStarterActivity"
+                    boolean="true"/>
+            </map>
+    </map>
+    <map id="NotificationPermission">
+        <entry
+            name="source"
+            boolean="true"/>
+    </map>
+    <map id="UnusedResources">
+        <location id="R.drawable.ic_pause_bars"
+            file="${:app*debug*sourceProvider*0*resDir*0}/drawable/ic_pause_bars.xml"
+            line="1"
+            column="1"
+            startOffset="0"
+            endLine="9"
+            endColumn="10"
+            endOffset="304"/>
+        <entry
+            name="model"
+            string="drawable[ic_crosshair_black(U),ic_play_triangle(U),ic_stop_square(U),ic_crosshair_red(U),ic_close(U),ic_pause_bars(D),ic_crosshair(U)],id[btn_grant_all_files(U),btn_load(U),et_rect_left(U),btn_refresh(U),et_base_w(U),et_rect_top(U),btn_save(U),et_blue_ratio(U),btn_start_independent(U),et_sim(U),et_rect_right(U),et_rect_bottom(U),btn_open_ts(U),et_confirm_ms(U),tv_log_content(U),et_interval(U),et_base_h(U),sp_log_file(U),btn_logs(U),btn_stop_independent(U),et_img(U),sp_mode(U),btn_settings(U),et_sample_step(U)],layout[activity_logs(U),activity_main(U),activity_settings(U)],string[app_name(U)],style[Theme_MaterialComponents_DayNight_NoActionBar(R)],xml[accessibility_service_config(U)];24^22;;;"/>
+    </map>
+
+</incidents>

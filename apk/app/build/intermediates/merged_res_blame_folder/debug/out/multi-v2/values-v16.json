@@ -1,0 +1,38 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.iceflow.roclicktaq.app-mergeDebugResources-29:/values-v16/values-v16.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\zf\\.gradle\\caches\\8.12\\transforms\\40d117b127c733dfd2690bc4f7b733f4\\transformed\\core-1.9.0\\res\\values-v16\\values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\zf\\.gradle\\caches\\8.12\\transforms\\8cfcd87c99e02a7e1b340956c1f5d474\\transformed\\appcompat-1.6.1\\res\\values-v16\\values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "223"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "121",
+                        "endLines": "6",
+                        "endColumns": "12",
+                        "endOffsets": "289"
+                    }
+                }
+            ]
+        }
+    ]
+}

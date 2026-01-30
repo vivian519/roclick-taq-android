@@ -1,0 +1,15 @@
+{
+  "mode": "image",
+  "img": "/sdcard/TouchSprite/lua/auto.png",
+  "img_sim": 0.85,
+  "interval_ms": 500,
+  "blue_ratio": 0.30,
+  "sample_step": 14,
+  "confirm_ms": 800,
+  "baseW": 1080,
+  "baseH": 2280,
+  "rect_left": 80,
+  "rect_right": 360,
+  "rect_top": 120,
+  "rect_bottom": 420
+}

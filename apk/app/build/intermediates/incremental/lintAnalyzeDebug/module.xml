@@ -1,0 +1,19 @@
+<lint-module
+    format="1"
+    dir="C:\Users\zf\Documents\TSStudio\Projects\roclick-taq\roclick-taq\apk\app"
+    name=":app"
+    type="APP"
+    maven="ROClickTAQ:app:"
+    agpVersion="8.1.1"
+    buildFolder="build"
+    bootClassPath="D:\Projects\Android\Sdk\platforms\android-34\android.jar;D:\Projects\Android\Sdk\build-tools\33.0.1\core-lambda-stubs.jar"
+    javaSourceLevel="1.8"
+    compileTarget="android-34"
+    neverShrinking="true">
+  <lintOptions
+      abortOnError="true"
+      absolutePaths="true"
+      checkReleaseBuilds="true"
+      explainIssues="true"/>
+  <variant name="debug"/>
+</lint-module>
