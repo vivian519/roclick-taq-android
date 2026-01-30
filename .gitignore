@@ -1,1 +1,31 @@
 logcat_output.txt
+# Android/Gradle build outputs
+apk/build/
+apk/app/build/
+
+# Gradle local cache and metadata
+apk/.gradle/
+apk/app/.gradle/
+
+# IDE project files
+apk/.idea/
+apk/app/.idea/
+*.iml
+
+# Local machine-specific config
+apk/local.properties
+apk/app/local.properties
+
+# Native build intermediates
+apk/.externalNativeBuild/
+apk/app/.externalNativeBuild/
+apk/.cxx/
+apk/app/.cxx/
+
+# Captures and misc
+apk/captures/
+apk/app/captures/
+
+# Temporary directories
+apk/temp/
+apk/tmp/
