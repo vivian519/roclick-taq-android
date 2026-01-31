@@ -36,7 +36,6 @@ public class OverlayService extends Service {
     private ImageView btnAimBlack;
     private ImageView btnAimRed;
     private ImageView btnAimBlue;
-    private TextView btnTest;
     private ImageView btnClose;
     private BroadcastReceiver stateReceiver;
     private int lastX;
@@ -90,11 +89,13 @@ public class OverlayService extends Service {
         btnAimBlue.setImageResource(R.drawable.ic_crosshair_blue);
         btnAimBlue.setClickable(true);
 
-        btnTest = new TextView(this);
+        TextView btnTest = new TextView(this);
         btnTest.setText("T");
-        btnTest.setTextSize(14);
-        btnTest.setTextColor(android.graphics.Color.WHITE);
+        btnTest.setTextSize(16);
+        btnTest.setTextColor(Color.WHITE);
         btnTest.setClickable(true);
+        btnTest.setPadding(dp(2), dp(2), dp(2), dp(2));
+        btnTest.setGravity(Gravity.CENTER);
 
         btnClose = new ImageView(this);
         btnClose.setImageResource(R.drawable.ic_close);
@@ -162,37 +163,20 @@ public class OverlayService extends Service {
                 } catch (Exception ignored) {}
             }
         });
+        btnTest.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                try {
+                    writeFlag("/sdcard/TouchSprite/config/debug_force_black_once.flag");
+                } catch (Exception ignored) {}
+                try {
+                    writeFlag("/sdcard/Android/data/com.touchsprite.android/files/TouchSprite/config/debug_force_black_once.flag");
+                } catch (Exception ignored) {}
+                try { Toast.makeText(OverlayService.this, "已触发测试黑点序列", Toast.LENGTH_SHORT).show(); } catch (Exception ignored) {}
+            }
+        });
         btnClose.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try { stopSelf(); } catch (Exception ignored) {}
-            }
-        });
-        btnTest.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                boolean ok = false;
-                try {
-                    File d1 = new File("/sdcard/TouchSprite/config");
-                    if (!d1.exists()) d1.mkdirs();
-                    File f1 = new File(d1, "debug_force_black_once.flag");
-                    FileOutputStream fos1 = new FileOutputStream(f1, false);
-                    fos1.write("1".getBytes(StandardCharsets.UTF_8));
-                    fos1.flush();
-                    fos1.close();
-                    ok = true;
-                } catch (Exception e1) {
-                }
-                try {
-                    File d2 = new File("/sdcard/Android/data/com.touchsprite.android/files/TouchSprite/config");
-                    if (!d2.exists()) d2.mkdirs();
-                    File f2 = new File(d2, "debug_force_black_once.flag");
-                    FileOutputStream fos2 = new FileOutputStream(f2, false);
-                    fos2.write("1".getBytes(StandardCharsets.UTF_8));
-                    fos2.flush();
-                    fos2.close();
-                    ok = true;
-                } catch (Exception e2) {
-                }
-                try { Toast.makeText(OverlayService.this, ok ? "已触发测试" : "触发失败", Toast.LENGTH_SHORT).show(); } catch (Exception ignored) {}
             }
         });
 
@@ -331,5 +315,15 @@ public class OverlayService extends Service {
                 btnRun.setImageResource(R.drawable.ic_play_triangle);
             }
         } catch (Exception ignored) {}
+    }
+
+    private void writeFlag(String path) throws Exception {
+        File f = new File(path);
+        File d = f.getParentFile();
+        if (d != null && !d.exists()) d.mkdirs();
+        FileOutputStream fos = new FileOutputStream(f, false);
+        fos.write("1".getBytes(StandardCharsets.UTF_8));
+        fos.flush();
+        fos.close();
     }
 }

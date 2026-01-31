@@ -29,21 +29,15 @@ public class MainActivity extends Activity {
     private boolean autoCaptureRequested;
     private boolean retryRequested;
     private static final int REQ_NOTIF = 10086;
-    private Button btnStart;
-    private Button btnStop;
-    private BroadcastReceiver stateReceiver;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         OverlayService.tryStart(this);
         autoCaptureRequested = false;
         try { com.iceflow.roclicktaq.io.LogIO.write("error.log", "MainActivity onCreate"); } catch (Exception ignored) {}
-        Button btnSettings = findViewById(R.id.btn_settings);
         Button btnLogs = findViewById(R.id.btn_logs);
-        Button btnOpenTS = findViewById(R.id.btn_open_ts);
+        Button btnBlackPoints = findViewById(R.id.btn_black_points_settings);
         Button btnGrant = findViewById(R.id.btn_grant_all_files);
-        btnStart = findViewById(R.id.btn_start_independent);
-        btnStop = findViewById(R.id.btn_stop_independent);
         cap = new CaptureManager();
         runner = new Runner();
         btnGrant.setOnClickListener(new View.OnClickListener() {
@@ -57,77 +51,17 @@ public class MainActivity extends Activity {
                 }
             }
         });
-        btnSettings.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-            }
-        });
         btnLogs.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, LogsActivity.class));
             }
         });
-        btnOpenTS.setOnClickListener(new View.OnClickListener() {
+        btnBlackPoints.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClassName("com.touchsprite.android", "com.touchsprite.android.activity.MainActivity");
-                try {
-                    startActivity(intent);
-                } catch (Exception e) {
-                    Toast.makeText(MainActivity.this, "无法打开触动精灵", Toast.LENGTH_SHORT).show();
-                }
+                startActivity(new Intent(MainActivity.this, BlackPointsSettingsActivity.class));
             }
         });
-        btnStart.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                CharSequence t = btnStart.getText();
-                if ("暂停 ||".contentEquals(t)) {
-                    Controller.pause(MainActivity.this);
-                    try { btnStart.setText("继续 ▶"); } catch (Exception ignored) {}
-                } else if ("继续 ▶".contentEquals(t)) {
-                    Controller.resume(MainActivity.this);
-                    try { btnStart.setText("暂停 ||"); } catch (Exception ignored) {}
-                } else {
-                    if (android.os.Build.VERSION.SDK_INT >= 33) {
-                        if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                            requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, REQ_NOTIF);
-                            return;
-                        }
-                    }
-                    if (!ConfigIO.canManageAllFiles(MainActivity.this)) {
-                        Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-                        intent.setData(Uri.parse("package:" + getPackageName()));
-                        startActivity(intent);
-                        return;
-                    }
-                    try { stopService(new Intent(MainActivity.this, OverlayService.class)); } catch (Exception ignored) {}
-                    Intent it = cap.createIntent(MainActivity.this);
-                    startActivityForResult(it, CaptureManager.REQ_CODE);
-                }
-            }
-        });
-        btnStop.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Controller.stopScript(MainActivity.this);
-                Toast.makeText(MainActivity.this, "脚本已停止", Toast.LENGTH_SHORT).show();
-                try { btnStart.setText("继续 ▶"); } catch (Exception ignored) {}
-                Intent s = new Intent(MainActivity.this, OverlayService.class);
-                s.setAction("rebuild");
-                startService(s);
-            }
-        });
-        stateReceiver = new BroadcastReceiver() {
-            public void onReceive(android.content.Context context, Intent intent) {
-                if (intent != null && "com.iceflow.roclicktaq.ACTION_RUNNER_STATE".equals(intent.getAction())) {
-                    String st = intent.getStringExtra("state");
-                    applyState(st);
-                }
-            }
-        };
-        try {
-            IntentFilter f = new IntentFilter("com.iceflow.roclicktaq.ACTION_RUNNER_STATE");
-            registerReceiver(stateReceiver, f);
-        } catch (Exception ignored) {}
+        ;
     }
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -140,9 +74,6 @@ public class MainActivity extends Activity {
         super.onResume();
         try { com.iceflow.roclicktaq.io.LogIO.write("error.log", "MainActivity onResume"); } catch (Exception ignored) {}
         try {
-            SharedPreferences sp = getSharedPreferences("roclick", MODE_PRIVATE);
-            String st = sp.getString("runner_state", "idle");
-            applyState(st);
         } catch (Exception ignored) {}
         if (autoCaptureRequested) {
             autoCaptureRequested = false;
@@ -171,18 +102,7 @@ public class MainActivity extends Activity {
     }
     protected void onDestroy() {
         super.onDestroy();
-        try { unregisterReceiver(stateReceiver); } catch (Exception ignored) {}
-    }
-    private void applyState(String st) {
-        try {
-            if ("running".equals(st)) {
-                btnStart.setText("暂停 ||");
-            } else if ("paused".equals(st) || "stopped".equals(st)) {
-                btnStart.setText("继续 ▶");
-            } else {
-                btnStart.setText("开始独立运行");
-            }
-        } catch (Exception ignored) {}
+        try { } catch (Exception ignored) {}
     }
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -214,7 +134,7 @@ public class MainActivity extends Activity {
             s.setAction("rebuild");
             startService(s);
             OverlayService.tryStart(this);
-            try { btnStart.setText("暂停 ||"); } catch (Exception ignored) {}
+            try { } catch (Exception ignored) {}
         }
     }
 }

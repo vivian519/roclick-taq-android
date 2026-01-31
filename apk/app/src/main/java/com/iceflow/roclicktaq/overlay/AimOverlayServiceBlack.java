@@ -128,6 +128,13 @@ public class AimOverlayServiceBlack extends Service {
                     int fy = Math.round((float) ay * baseH / sh);
                     cfg.put("fixed_black_cx", fx);
                     cfg.put("fixed_black_cy", fy);
+                    org.json.JSONArray arr = cfg.optJSONArray("fixed_black_points");
+                    if (arr == null) arr = new org.json.JSONArray();
+                    JSONObject pt = new JSONObject();
+                    pt.put("x", fx);
+                    pt.put("y", fy);
+                    arr.put(pt);
+                    cfg.put("fixed_black_points", arr);
                     boolean ok = ConfigIO.writeConfig(cfg);
                     Toast.makeText(AimOverlayServiceBlack.this, ok ? "坐标已保存" : "保存失败", Toast.LENGTH_SHORT).show();
                     stopSelf();
