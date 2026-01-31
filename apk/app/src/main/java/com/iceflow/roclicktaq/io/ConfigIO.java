@@ -2,6 +2,7 @@ package com.iceflow.roclicktaq.io;
 
 import android.content.Context;
 import android.os.Environment;
+import android.os.Build;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +40,11 @@ public class ConfigIO {
     }
 
     public static boolean canManageAllFiles(Context ctx) {
-        return Environment.isExternalStorageManager();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return Environment.isExternalStorageManager();
+        } else {
+            return true;
+        }
     }
 
     public static JSONObject readConfig() {

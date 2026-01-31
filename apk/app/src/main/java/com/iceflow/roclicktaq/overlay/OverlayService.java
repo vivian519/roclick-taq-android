@@ -18,9 +18,15 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.iceflow.roclicktaq.R;
 import com.iceflow.roclicktaq.run.Controller;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.charset.StandardCharsets;
 
 public class OverlayService extends Service {
     private WindowManager wm;
@@ -29,6 +35,8 @@ public class OverlayService extends Service {
     private ImageView btnStop;
     private ImageView btnAimBlack;
     private ImageView btnAimRed;
+    private ImageView btnAimBlue;
+    private TextView btnTest;
     private ImageView btnClose;
     private BroadcastReceiver stateReceiver;
     private int lastX;
@@ -78,6 +86,15 @@ public class OverlayService extends Service {
         btnAimRed = new ImageView(this);
         btnAimRed.setImageResource(R.drawable.ic_crosshair_red);
         btnAimRed.setClickable(true);
+        btnAimBlue = new ImageView(this);
+        btnAimBlue.setImageResource(R.drawable.ic_crosshair_blue);
+        btnAimBlue.setClickable(true);
+
+        btnTest = new TextView(this);
+        btnTest.setText("T");
+        btnTest.setTextSize(14);
+        btnTest.setTextColor(android.graphics.Color.WHITE);
+        btnTest.setClickable(true);
 
         btnClose = new ImageView(this);
         btnClose.setImageResource(R.drawable.ic_close);
@@ -89,6 +106,8 @@ public class OverlayService extends Service {
         root.addView(btnStop, lp);
         root.addView(btnAimBlack, lp);
         root.addView(btnAimRed, lp);
+        root.addView(btnAimBlue, lp);
+        root.addView(btnTest, lp);
         root.addView(btnClose, lp);
 
         btnRun.setOnClickListener(new View.OnClickListener() {
@@ -135,9 +154,45 @@ public class OverlayService extends Service {
                 } catch (Exception ignored) {}
             }
         });
+        btnAimBlue.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                try {
+                    Intent i = new Intent(getApplicationContext(), com.iceflow.roclicktaq.overlay.AimOverlayServiceBlue.class);
+                    getApplicationContext().startService(i);
+                } catch (Exception ignored) {}
+            }
+        });
         btnClose.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try { stopSelf(); } catch (Exception ignored) {}
+            }
+        });
+        btnTest.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                boolean ok = false;
+                try {
+                    File d1 = new File("/sdcard/TouchSprite/config");
+                    if (!d1.exists()) d1.mkdirs();
+                    File f1 = new File(d1, "debug_force_black_once.flag");
+                    FileOutputStream fos1 = new FileOutputStream(f1, false);
+                    fos1.write("1".getBytes(StandardCharsets.UTF_8));
+                    fos1.flush();
+                    fos1.close();
+                    ok = true;
+                } catch (Exception e1) {
+                }
+                try {
+                    File d2 = new File("/sdcard/Android/data/com.touchsprite.android/files/TouchSprite/config");
+                    if (!d2.exists()) d2.mkdirs();
+                    File f2 = new File(d2, "debug_force_black_once.flag");
+                    FileOutputStream fos2 = new FileOutputStream(f2, false);
+                    fos2.write("1".getBytes(StandardCharsets.UTF_8));
+                    fos2.flush();
+                    fos2.close();
+                    ok = true;
+                } catch (Exception e2) {
+                }
+                try { Toast.makeText(OverlayService.this, ok ? "已触发测试" : "触发失败", Toast.LENGTH_SHORT).show(); } catch (Exception ignored) {}
             }
         });
 

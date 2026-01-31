@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
         runner = new Runner();
         btnGrant.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (!Environment.isExternalStorageManager()) {
+                if (!ConfigIO.canManageAllFiles(MainActivity.this)) {
                     Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
                     intent.setData(Uri.parse("package:" + getPackageName()));
                     startActivity(intent);
@@ -94,7 +94,7 @@ public class MainActivity extends Activity {
                             return;
                         }
                     }
-                    if (!Environment.isExternalStorageManager()) {
+                    if (!ConfigIO.canManageAllFiles(MainActivity.this)) {
                         Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
                         intent.setData(Uri.parse("package:" + getPackageName()));
                         startActivity(intent);
@@ -158,7 +158,7 @@ public class MainActivity extends Activity {
                         return;
                     }
                 }
-                if (!Environment.isExternalStorageManager()) {
+                if (!ConfigIO.canManageAllFiles(MainActivity.this)) {
                     Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
                     intent.setData(Uri.parse("package:" + getPackageName()));
                     startActivity(intent);

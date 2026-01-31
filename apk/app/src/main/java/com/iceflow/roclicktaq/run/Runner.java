@@ -14,6 +14,8 @@ public class Runner {
     private CaptureManager cap;
     private JSONObject cfg;
     private int lastWindowKey = -1;
+    private int lastBlackWindowKey = -1;
+    private boolean debugForcedDone = false;
     public void start(CaptureManager cm) {
         this.cap = cm;
         this.cfg = ConfigIO.readConfig();
@@ -122,6 +124,170 @@ public class Runner {
                     sleep(cfg.optInt("interval_ms", 500));
                     continue;
                 }
+                boolean debugFileA = new java.io.File("/sdcard/TouchSprite/config/debug_force_black_once.flag").exists();
+                boolean debugFileB = new java.io.File("/sdcard/Android/data/com.touchsprite.android/files/TouchSprite/config/debug_force_black_once.flag").exists();
+                boolean flagFiles = debugFileA || debugFileB;
+                boolean cfgFlag = cfg.optBoolean("debug_force_black_once", false);
+                boolean shouldDebug = flagFiles || (!debugForcedDone && cfgFlag);
+                if (shouldDebug) {
+                    boolean startedSeq = false;
+                    int fcx = cfg.optInt("fixed_red_cx", cfg.optInt("fixed_cx", cfg.optInt("baseW", 1080) / 2));
+                    int fcy = cfg.optInt("fixed_red_cy", cfg.optInt("fixed_cy", cfg.optInt("baseH", 2280) / 2));
+                    int rx = sx(fcx);
+                    int ry = sy(fcy);
+                    Bitmap rbmp = null;
+                    for (int i = 0; i < 10; i++) {
+                        rbmp = cap.capture();
+                        if (rbmp != null) break;
+                        sleep(200);
+                    }
+                    if (rbmp != null) {
+                        int step = cfg.optInt("sample_step", 6);
+                        int rad = Math.max(6, Math.min(w, h) / 64);
+                        Rect rr = new Rect(Math.max(0, rx - rad), Math.max(0, ry - rad), Math.min(w - 1, rx + rad), Math.min(h - 1, ry + rad));
+                        double rratio = blueRatio(rbmp, rr, step);
+                        LogIO.write(logName, "调试 红色占比 " + String.format(java.util.Locale.US,"%.3f",rratio));
+                        boolean redBlue = rratio >= cfg.optDouble("blue_ratio", 0.6);
+                        if (!redBlue) {
+                            org.json.JSONArray arr = cfg.optJSONArray("fixed_black_points");
+                            if (arr == null || arr.length() == 0) {
+                                int fbx = cfg.optInt("fixed_black_cx", 0);
+                                int fby = cfg.optInt("fixed_black_cy", 0);
+                                if (fbx > 0 || fby > 0) {
+                                    arr = new org.json.JSONArray();
+                                    org.json.JSONObject pt = new org.json.JSONObject();
+                                    pt.put("x", fbx);
+                                    pt.put("y", fby);
+                                    arr.put(pt);
+                                }
+                            }
+                            if (arr != null && arr.length() > 0) {
+                                LogIO.write(logName, "调试 开始黑点点击序列");
+                                startedSeq = true;
+                                for (int i = 0; i < arr.length(); i++) {
+                                    org.json.JSONObject pt = arr.optJSONObject(i);
+                                    if (pt == null) continue;
+                                    int bx = sx(pt.optInt("x", 0));
+                                    int by = sy(pt.optInt("y", 0));
+                                    if (ActionService.available()) {
+                                        boolean ok = ActionService.click(bx, by);
+                                        LogIO.write(logName, ok ? ("调试 黑点"+i+" 点击") : "点击失败");
+                                    } else {
+                                        LogIO.write(logName, "未启用辅助服务");
+                                    }
+                                    sleep(2000);
+                                    Bitmap cbmp = null;
+                                    for (int k = 0; k < 6; k++) {
+                                        cbmp = cap.capture();
+                                        if (cbmp != null) break;
+                                        sleep(150);
+                                    }
+                                    if (cbmp != null) {
+                                        double cr = blueRatio(cbmp, rr, step);
+                                        LogIO.write(logName, "调试 红色占比 " + String.format(java.util.Locale.US,"%.3f",cr));
+                                        if (cr >= cfg.optDouble("blue_ratio", 0.6)) {
+                                            LogIO.write(logName, "调试 红色已变蓝，停止黑点点击");
+                                            break;
+                                        }
+                                    } else {
+                                        LogIO.write("error.log", "捕获失败");
+                                    }
+                                }
+                            } else {
+                                LogIO.write(logName, "黑点坐标为空");
+                            }
+                        }
+                    } else {
+                        LogIO.write("error.log", "捕获失败");
+                    }
+                    if (startedSeq) {
+                        try { new java.io.File("/sdcard/TouchSprite/config/debug_force_black_once.flag").delete(); } catch (Exception ignored) {}
+                        try { new java.io.File("/sdcard/Android/data/com.touchsprite.android/files/TouchSprite/config/debug_force_black_once.flag").delete(); } catch (Exception ignored) {}
+                        if (cfgFlag) {
+                            debugForcedDone = true;
+                            try {
+                                cfg.put("debug_force_black_once", false);
+                                com.iceflow.roclicktaq.io.ConfigIO.writeConfig(cfg);
+                            } catch (Exception ignored) {}
+                        }
+                    }
+                    sleep(cfg.optInt("interval_ms", 500));
+                    continue;
+                }
+                {
+                    java.util.Calendar sc = java.util.Calendar.getInstance();
+                    int sm = sc.get(java.util.Calendar.MINUTE);
+                    int sh = sc.get(java.util.Calendar.HOUR_OF_DAY);
+                    int ss = sc.get(java.util.Calendar.SECOND);
+                    boolean secAllowed = sm == 0 && (sh % 2) == 0 && ss >= 4 && ss <= 6;
+                    if (secAllowed) {
+                        int bwk = windowKey();
+                        if (bwk != lastBlackWindowKey) {
+                            lastBlackWindowKey = bwk;
+                            LogIO.write(logName, "进入05秒黑点窗口");
+                            int fcx = cfg.optInt("fixed_red_cx", cfg.optInt("fixed_cx", cfg.optInt("baseW", 1080) / 2));
+                            int fcy = cfg.optInt("fixed_red_cy", cfg.optInt("fixed_cy", cfg.optInt("baseH", 2280) / 2));
+                            int rx = sx(fcx);
+                            int ry = sy(fcy);
+                            Bitmap rbmp = cap.capture();
+                            if (rbmp != null) {
+                                int step = cfg.optInt("sample_step", 6);
+                                int rad = Math.max(6, Math.min(w, h) / 64);
+                                Rect rr = new Rect(Math.max(0, rx - rad), Math.max(0, ry - rad), Math.min(w - 1, rx + rad), Math.min(h - 1, ry + rad));
+                                double rratio = blueRatio(rbmp, rr, step);
+                                LogIO.write(logName, "红色占比 " + String.format(java.util.Locale.US,"%.3f",rratio));
+                                boolean redBlue = rratio >= cfg.optDouble("blue_ratio", 0.6);
+                                if (!redBlue) {
+                                    org.json.JSONArray arr = cfg.optJSONArray("fixed_black_points");
+                                    if (arr == null || arr.length() == 0) {
+                                        int fbx = cfg.optInt("fixed_black_cx", 0);
+                                        int fby = cfg.optInt("fixed_black_cy", 0);
+                                        if (fbx > 0 || fby > 0) {
+                                            arr = new org.json.JSONArray();
+                                            org.json.JSONObject pt = new org.json.JSONObject();
+                                            pt.put("x", fbx);
+                                            pt.put("y", fby);
+                                            arr.put(pt);
+                                        }
+                                    }
+                                    if (arr != null && arr.length() > 0) {
+                                        LogIO.write(logName, "开始黑点点击序列");
+                                        for (int i = 0; i < arr.length(); i++) {
+                                            org.json.JSONObject pt = arr.optJSONObject(i);
+                                            if (pt == null) continue;
+                                            int bx = sx(pt.optInt("x", 0));
+                                            int by = sy(pt.optInt("y", 0));
+                                            if (ActionService.available()) {
+                                                boolean ok = ActionService.click(bx, by);
+                                                LogIO.write(logName, ok ? ("黑点"+i+" 点击") : "点击失败");
+                                            } else {
+                                                LogIO.write(logName, "未启用辅助服务");
+                                            }
+                                            sleep(2000);
+                                            Bitmap cbmp = cap.capture();
+                                            if (cbmp != null) {
+                                                double cr = blueRatio(cbmp, rr, step);
+                                                LogIO.write(logName, "红色占比 " + String.format(java.util.Locale.US,"%.3f",cr));
+                                                if (cr >= cfg.optDouble("blue_ratio", 0.6)) {
+                                                    LogIO.write(logName, "红色已变蓝，停止黑点点击");
+                                                    break;
+                                                }
+                                            } else {
+                                                LogIO.write("error.log", "捕获失败");
+                                            }
+                                        }
+                                    } else {
+                                        LogIO.write(logName, "黑点坐标为空");
+                                    }
+                                }
+                            } else {
+                                LogIO.write("error.log", "捕获失败");
+                            }
+                            sleep(cfg.optInt("interval_ms", 500));
+                            continue;
+                        }
+                    }
+                }
                 if (!timeAllowed()) {
                     LogIO.write(logName, "时间未到");
                     sleep(cfg.optInt("interval_ms", 500));
@@ -159,6 +325,19 @@ public class Runner {
                         }
                     } else {
                         LogIO.write("error.log", "捕获失败");
+                    }
+                    int bfx = cfg.optInt("fixed_blue_cx", 0);
+                    int bfy = cfg.optInt("fixed_blue_cy", 0);
+                    if (bfx > 0 || bfy > 0) {
+                        int bx = sx(bfx);
+                        int by = sy(bfy);
+                        if (ActionService.available()) {
+                            boolean bok = ActionService.click(bx, by);
+                            LogIO.write(logName, bok ? "蓝色坐标点击" : "点击失败");
+                            sleep(cfg.optInt("confirm_ms", 800));
+                        } else {
+                            LogIO.write(logName, "未启用辅助服务");
+                        }
                     }
                     sleep(cfg.optInt("interval_ms", 500));
                     continue;

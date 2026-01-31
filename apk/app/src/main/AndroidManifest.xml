@@ -43,6 +43,9 @@
         <service
             android:name=".overlay.AimOverlayServiceRed"
             android:exported="false" />
+        <service
+            android:name=".overlay.AimOverlayServiceBlue"
+            android:exported="false" />
 
         <activity
             android:name=".ui.MainActivity"
