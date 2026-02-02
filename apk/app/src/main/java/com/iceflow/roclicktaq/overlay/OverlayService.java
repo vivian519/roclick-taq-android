@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.iceflow.roclicktaq.R;
 import com.iceflow.roclicktaq.run.Controller;
+import com.iceflow.roclicktaq.io.ConfigIO;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -97,6 +98,19 @@ public class OverlayService extends Service {
         btnTest.setPadding(dp(2), dp(2), dp(2), dp(2));
         btnTest.setGravity(Gravity.CENTER);
 
+        TextView btnToggleBlack = new TextView(this);
+        btnToggleBlack.setText("H");
+        btnToggleBlack.setTextSize(16);
+        btnToggleBlack.setTextColor(Color.WHITE);
+        btnToggleBlack.setClickable(true);
+        btnToggleBlack.setPadding(dp(2), dp(2), dp(2), dp(2));
+        btnToggleBlack.setGravity(Gravity.CENTER);
+        try {
+            org.json.JSONObject cfg0 = ConfigIO.readConfig();
+            boolean en0 = cfg0.optBoolean("enable_black", true);
+            btnToggleBlack.setTextColor(en0 ? Color.RED : Color.WHITE);
+        } catch (Exception ignored) {}
+
         btnClose = new ImageView(this);
         btnClose.setImageResource(R.drawable.ic_close);
         btnClose.setClickable(true);
@@ -109,6 +123,7 @@ public class OverlayService extends Service {
         root.addView(btnAimRed, lp);
         root.addView(btnAimBlue, lp);
         root.addView(btnTest, lp);
+        root.addView(btnToggleBlack, lp);
         root.addView(btnClose, lp);
 
         btnRun.setOnClickListener(new View.OnClickListener() {
@@ -172,6 +187,27 @@ public class OverlayService extends Service {
                     writeFlag("/sdcard/Android/data/com.touchsprite.android/files/TouchSprite/config/debug_force_black_once.flag");
                 } catch (Exception ignored) {}
                 try { Toast.makeText(OverlayService.this, "已触发测试黑点序列", Toast.LENGTH_SHORT).show(); } catch (Exception ignored) {}
+            }
+        });
+        btnToggleBlack.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                try {
+                    org.json.JSONObject cfg = ConfigIO.readConfig();
+                    boolean curr = cfg.optBoolean("enable_black", true);
+                    boolean next = !curr;
+                    cfg.put("enable_black", next);
+                    boolean ok = ConfigIO.writeConfig(cfg);
+                    if (ok) {
+                        try { btnToggleBlack.setTextColor(next ? Color.RED : Color.WHITE); } catch (Exception ignored) {}
+                        try { Toast.makeText(OverlayService.this, next ? "黑点逻辑：开" : "黑点逻辑：关", Toast.LENGTH_SHORT).show(); } catch (Exception ignored) {}
+                        try { Controller.stopScript(getApplicationContext()); } catch (Exception ignored) {}
+                        try { Controller.resume(getApplicationContext()); } catch (Exception ignored) {}
+                    } else {
+                        try { Toast.makeText(OverlayService.this, "保存失败", Toast.LENGTH_SHORT).show(); } catch (Exception ignored) {}
+                    }
+                } catch (Exception e) {
+                    try { Toast.makeText(OverlayService.this, "操作失败", Toast.LENGTH_SHORT).show(); } catch (Exception ignored) {}
+                }
             }
         });
         btnClose.setOnClickListener(new View.OnClickListener() {
