@@ -97,10 +97,12 @@ public class ForegroundCaptureService extends Service {
                     updateState("running");
                 } else {
                     try { LogIO.write("error.log", "服务启动失败"); } catch (Exception ignored) {}
+                    updateState("stopped");
                     stopSelf();
                 }
             } catch (Exception e) {
                 try { LogIO.write("error.log", "服务异常"); } catch (Exception ignored) {}
+                updateState("stopped");
                 stopSelf();
             }
         }).start();
@@ -111,6 +113,7 @@ public class ForegroundCaptureService extends Service {
         super.onDestroy();
         try { if (runner != null) runner.stop(); } catch (Exception ignored) {}
         try { if (cap != null) cap.stop(); } catch (Exception ignored) {}
+        updateState("stopped");
     }
 
     private void createChannel() {
